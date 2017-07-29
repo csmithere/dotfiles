@@ -220,6 +220,7 @@ bindsym $mod+d exec rofi -show run -lines 3 -eh 2 -width 100 -padding 800 -opaci
 #######################
 #
 # Wallpaper
+exec_always xrdb ~/.Xresources
 exec_always feh --bg-scale /home/smithch/OneDrive/Documents/Wallpaper/32695258143_c0ed209912_o.jpg
 exec_always compton -f
 exec_always --no-startup-id dunst
