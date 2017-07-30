@@ -192,19 +192,12 @@ bar {
 }
 
 # Multimedia Keys
-# increase volume
-bindsym XF86AudioRaiseVolume exec amixer -q set Master 5%+ unmute
-# decrease volume
-bindsym XF86AudioLowerVolume exec amixer -q set Master 5%- unmute
-# mute volume
-bindsym XF86AudioMute exec amixer -q set Master mute
 
-# Lock Screen
-bindsym $mod+Shift+x exec /home/smithch/bin/lockmyi3
-
-# Sreen brightness controls
-bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
-bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
+bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 5%+
+ bindsym XF86AudioLowerVolume exec amixer -D pulse sset Master 5%-
+ bindsym XF86AudioMute exec pactl set-sink-mute $(pacmd list-sinks |awk '/* index:/{print $3}') toggle
+bindsym XF86MonBrightnessDown exec dsplight down 5
+bindsym XF86MonBrightnessUp exec dsplight up 5
 
 # start dmenu (a program launcher)
 #bindsym $mod+d exec dmenu_run
@@ -219,7 +212,7 @@ bindsym $mod+d exec rofi -show run -lines 3 -eh 2 -width 100 -padding 800 -opaci
 # Application Loading #
 #######################
 #
-# Wallpaper
 exec_always xrdb ~/.Xresources
 exec_always feh --bg-scale /home/smithch/OneDrive/Documents/Wallpaper/32695258143_c0ed209912_o.jpg
 exec_always compton -f
+exec wicd-client --tray
