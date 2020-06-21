@@ -1,0 +1,13 @@
+/* font converted using font-converter.net. thank you! */
+@font-face {
+  font-family: "MesloLGS-NF-Regular";
+  src: url("./fonts/MesloLGSNFRegular.eot"); /* IE9 Compat Modes */
+  src: url("./fonts/MesloLGSNFRegular.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
+    url("./fonts/MesloLGSNFRegular.otf") format("opentype"), /* Open Type Font */
+    url("./fonts/MesloLGSNFRegular.svg") format("svg"), /* Legacy iOS */
+    url("./fonts/MesloLGSNFRegular.ttf") format("truetype"), /* Safari, Android, iOS */
+    url("./fonts/MesloLGSNFRegular.woff") format("woff"), /* Modern Browsers */
+    url("./fonts/MesloLGSNFRegular.woff2") format("woff2"); /* Modern Browsers */
+  font-weight: normal;
+  font-style: normal;
+}
