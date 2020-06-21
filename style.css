@@ -1,6 +1,27 @@
-/* font converted using font-converter.net. thank you! */
 @font-face {
-  font-family: "MesloLGS";
-  src:local("MesloLGS NF Regular")
-    url(fonts/MesloNFLGLDZRegular.woff2) format("woff2"); /* Modern Browsers */
+  font-family: "MesloLGS-NF-Regular";
+  src:  url("./fonts/MesloLGSNFRegular.woff2") format("woff2"); /* Modern Browsers */
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "MesloLGS-NF-Bold";
+  src: url("./fonts/MesloLGSNFBold.woff2") format("woff2"); /* Modern Browsers */
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "MesloLGS-NF-Italic";
+  src: url("./fonts/MesloLGSNFItalic.woff2") format("woff2"); /* Modern Browsers */
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "MesloLGS-NF-Bold-Italic";
+  src: url("./fonts/MesloLGSNFBoldItalic.woff2") format("woff2"); /* Modern Browsers */
+  font-weight: normal;
+  font-style: normal;
 }
