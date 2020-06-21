@@ -1,6 +1,6 @@
 /* font converted using font-converter.net. thank you! */
 @font-face {
-  font-family: "MesloLGS-NF-Regular";
-  src:local("MesloLGS-NF-Regular")
-    url("https://cdn.jsdelivr.net/gh/csmithere/dotfiles@3078f19f14460631ec1fff416442482fe498d438/MesloLGSNFRegular.woff2") format("woff2"); /* Modern Browsers */
+  font-family: "MesloLGS";
+  src:local("MesloLGS NF Regular")
+    url(fonts/MesloLGSNFRegular.woff2) format("woff2"); /* Modern Browsers */
 }
