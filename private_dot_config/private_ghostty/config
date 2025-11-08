@@ -1,0 +1,55 @@
+# background = 1c2021
+#shell-integration = fish
+#shell-integration-features = sudo
+#theme = "Gruvbox Material"
+window-height = "23"
+window-width = "94"
+keybind = global:cmd+up=new_split:up
+keybind = cmd+down=new_split:down
+keybind = cmd+left=new_split:left
+keybind = cmd+right=new_split:right
+#keybind = global:cmd+`=toggle_quick_terminal
+## cut/paste
+#copy-on-select = clipboard
+#clipboard-read = "allow"
+#clipboard-write = "allow"
+
+
+# Fonts, underlines
+#font-family = SFMono Nerd Font
+#font-style-italic = Regular Italic
+font-size = 14
+font-feature = -calt
+font-feature = -liga
+font-feature = -dlig
+adjust-underline-position = 2
+adjust-cell-height = -1
+cursor-style = block
+cursor-style-blink = true
+
+# Windows, colors and styles
+theme = Gruvbox Dark Hard
+#background = #000000
+background-blur = 10
+#macos-titlebar-style = hidden
+window-padding-y = 2,0
+window-padding-x = 2
+window-padding-balance = true
+#background-opacity = 0.90
+
+# macOS stuff
+macos-option-as-alt = left
+macos-window-shadow = false
+shell-integration-features = no-cursor
+
+# Keys
+# Ascii device control codes: https://www3.rocketsoftware.com/bluezone/help/v42/en/bzadmin/APPENDIX_C/ASCII_Character_Set.htm
+#keybind = alt+left=unbind
+#keybind = alt+right=unbind
+#keybind = super+enter=unbind
+
+# Tmux-sessionizer: Ctrl-f+S (.zshrc binds this to `s\n`, since `s` is an alias
+# for tmux-sessionizer)
+#keybind = cmd+s=text:\x06\x53
+#keybind = cmd+b=text:\x06\x42
+#keybind = cmd+h=text:\x06\x48## font-family = ""
