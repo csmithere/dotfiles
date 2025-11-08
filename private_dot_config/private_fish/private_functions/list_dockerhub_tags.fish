@@ -14,11 +14,13 @@ function list_dockerhub_tags
 
     set REPO $argv[1]
 
-    # ▼ ▼ ▼ --- SET YOUR CREDENTIALS HERE --- ▼ ▼ ▼
-    # Replace these placeholder values with your actual Docker Hub credentials.
-    set -l UNAME "devopsbigid"
-    set -l TOKEN_PASS "f9fd1ecf-3f94-4758-ac78-eb7afae6a21b"
-    # ▲ ▲ ▲ --- END OF CREDENTIALS SECTION --- ▲ ▲ ▲
+    if not set -q DOCKERHUB_USERNAME; or not set -q DOCKERHUB_TOKEN
+        echo "Error: DOCKERHUB_USERNAME and DOCKERHUB_TOKEN must be set as environment variables (e.g., via chezmoi)."
+        return 1
+    end
+
+    set -l UNAME "$DOCKERHUB_USERNAME"
+    set -l TOKEN_PASS "$DOCKERHUB_TOKEN"
 
 
     # 3. Get API Token
