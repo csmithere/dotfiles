@@ -12,6 +12,7 @@ alias vi="/opt/homebrew/bin/nvim"
 alias vim="/opt/homebrew/bin/nvim"
 alias cat="/opt/homebrew/bin/bat"
 alias grep="/opt/homebrew/bin/rg"
+set -gx EDITOR nvim
 
 # SSH SOCK
 set -x SSH_AUTH_SOCK ~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
