@@ -1,0 +1,124 @@
+# BigID Related
+
+set -gx AWS_PROFILE admin-presales
+set -gx TERM xterm-256color
+
+###################
+# Alias Functions #
+###################
+
+# Download Compose, Full Image, and Scanner Image Commands
+function set_token -d "Set BigID download token"
+    set -g BIGID_DOWNLOADS_ACCESS_TOKEN $argv[1]
+    echo "BIGID_DOWNLOADS_ACCESS_TOKEN has been set globally."
+end
+
+function set_release -d "Set BigID release version"
+    set -g RELEASE $argv[1]
+    echo "RELEASE has been set globally."
+end
+
+function download_bigid_file -d "Downloads BigID files"
+    set -l file_type $argv[1]
+    if test -z "$file_type"
+        echo "Usage: download_bigid_file <file_type>"
+        echo "Available file types: compose, images, images-scanner, images-labeler"
+        return 1
+    end
+
+    set -l file_name "bigid-$file_type-release-$RELEASE.tar.gz"
+    set -l url "https://us.downloads.bigid.com/?file=release-$RELEASE/$file_name"
+
+    if not set -q BIGID_DOWNLOADS_ACCESS_TOKEN
+        echo "Error: BIGID_DOWNLOADS_ACCESS_TOKEN is not set."
+        return 1
+    end
+
+    if not set -q RELEASE
+        echo "Error: RELEASE is not set."
+        return 1
+    end
+
+    echo "Downloading $file_name..."
+    curl -H "Authorization: $BIGID_DOWNLOADS_ACCESS_TOKEN" -L "$url" -o "$file_name"
+end
+
+alias gcpse "download_bigid_file compose"
+alias gimgse "download_bigid_file images"
+alias gscanse "download_bigid_file images-scanner"
+alias glabse "download_bigid_file images-labeler"
+
+# Registry Logins
+function bidlogin -d "Login to BigID Docker registry"
+    if not set -q BIGID_DEVOPS_USER; or not set -q BIGID_DEVOPS_PASS
+        echo "Error: BIGID_DEVOPS_USER and BIGID_DEVOPS_PASS must be set as environment variables."
+        return 1
+    end
+    docker login -u "$BIGID_DEVOPS_USER" -p "$BIGID_DEVOPS_PASS"
+end
+
+function cslogin -d "Login to CS BigID Docker registry"
+    if not set -q CS_BIGID_USER; or not set -q CS_BIGID_PASS
+        echo "Error: CS_BIGID_USER and CS_BIGID_PASS must be set as environment variables."
+        return 1
+    end
+    docker login -u "$CS_BIGID_USER" --password "$CS_BIGID_PASS"
+end
+
+function ecrlogin -d "Login to AWS ECR"
+    aws --profile bigid-ci ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 656782941097.dkr.ecr.us-east-1.amazonaws.com
+end
+
+# AWS Logs
+alias awslogs-groups "aws logs describe-log-groups --query 'logGroups[*].logGroupName' --output text | tr -s '\t' '\n' | sort"
+alias awslogs-tailf "aws logs tail --follow"
+alias awslogs-15m "aws logs tail --since 15m"
+
+function awslogs-trace
+    set log_group $argv[1]
+    set pattern $argv[2]
+    if test -z "$log_group" -o -z "$pattern"
+        echo "Usage: awlogs-trace <log-group-name> <pattern-to-find>"
+        return 1
+    end
+    # The filter pattern requires quotes around the string you're searching for
+    aws logs tail --follow $log_group --filter-pattern "\"$pattern\""
+end
+
+# Terraform
+alias tap "terraform apply --auto-approve"
+alias tda "terraform destroy --auto-approve"
+alias tsl "terraform state list"
+alias tit "terraform init"
+alias tout "terraform output"
+
+function tlo -d "Lock a file"
+    sudo chflags uchg $argv[1]
+end
+
+function tul -d "Unlock a file"
+    sudo chflags nouchg $argv[1]
+end
+
+# Misc AWS
+function elc -d "List ECS clusters"
+    aws ecs list-clusters --query 'clusterArns' --output text
+end
+
+function elt -d "List ECS tasks in a cluster"
+    set -l cluster $argv[1]
+    if test -z "$cluster"
+        echo "Usage: elt <cluster_name>"
+        return 1
+    end
+    aws ecs list-tasks --cluster "$cluster" --output text
+end
+
+function els -d "List ECS services in a cluster"
+    set -l cluster $argv[1]
+    if test -z "$cluster"
+        echo "Usage: els <cluster_name>"
+        return 1
+    end
+    aws ecs list-services --cluster "$cluster" --output text
+end
