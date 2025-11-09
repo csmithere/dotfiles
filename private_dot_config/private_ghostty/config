@@ -16,15 +16,14 @@ keybind = cmd+right=new_split:right
 
 
 # Fonts, underlines
-font-family = JetBrainsMono Nerd Font
-font-style-italic = Regular Italic
+#font-family = SFMono Nerd Font
+#font-style-italic = Regular Italic
 font-size = 14
 font-feature = -calt
 font-feature = -liga
 font-feature = -dlig
 adjust-underline-position = 2
-adjust-cell-height = 0
-adjust-font-baseline = 0
+adjust-cell-height = -1
 cursor-style = block
 cursor-style-blink = true
 
