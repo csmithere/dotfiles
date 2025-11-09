@@ -1,22 +1,42 @@
 if status is-interactive
     # Commands to run in interactive sessions can go here
+
+    # thefuck - Only load in interactive shells to improve startup time
+    if command -v thefuck >/dev/null 2>&1
+        thefuck --alias | source
+    end
+
+    # Command abbreviations - These expand visually when you type them
+    # Use abbr instead of alias for better history and inline editing
+    if command -v lsd >/dev/null 2>&1
+        abbr --add ls lsd
+    end
+    if command -v nvim >/dev/null 2>&1
+        abbr --add vi nvim
+        abbr --add vim nvim
+    end
+    if command -v bat >/dev/null 2>&1
+        abbr --add cat bat
+    end
+    if command -v rg >/dev/null 2>&1
+        abbr --add grep rg
+    end
 end
 
-# General
-alias ls="/opt/homebrew/bin/lsd"
-alias vi="/opt/homebrew/bin/nvim"
-alias vim="/opt/homebrew/bin/nvim"
-alias cat="/opt/homebrew/bin/bat"
-alias grep="/opt/homebrew/bin/rg"
-set -gx EDITOR nvim
+# Set EDITOR based on what's available
+if command -v nvim >/dev/null 2>&1
+    set -gx EDITOR nvim
+else if command -v vim >/dev/null 2>&1
+    set -gx EDITOR vim
+else
+    set -gx EDITOR vi
+end
 
-# thef__k
-thefuck --alias | source
 
-# AWS
-#export AWS_PROFILE=presales
-# AWS cli completion
-test -x (which aws_completer); and complete --command aws --no-files --arguments '(begin; set --local --export COMP_SHELL fish; set --local --export COMP_LINE (commandline); aws_completer | sed \'s/ $//\'; end)'
+# AWS cli completion - Use command -v instead of which for better performance
+if command -v aws_completer >/dev/null 2>&1
+    complete --command aws --no-files --arguments '(begin; set --local --export COMP_SHELL fish; set --local --export COMP_LINE (commandline); aws_completer | sed \'s/ $//\'; end)'
+end
 
-# SSH SOCK
-set -x SSH_AUTH_SOCK ~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
+# 1Password SSH Agent
+set -gx SSH_AUTH_SOCK "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"

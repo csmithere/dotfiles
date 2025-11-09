@@ -43,10 +43,13 @@ function download_bigid_file -d "Downloads BigID files"
     curl -H "Authorization: $BIGID_DOWNLOADS_ACCESS_TOKEN" -L "$url" -o "$file_name"
 end
 
-alias gcpse "download_bigid_file compose"
-alias gimgse "download_bigid_file images"
-alias gscanse "download_bigid_file images-scanner"
-alias glabse "download_bigid_file images-labeler"
+# BigID Download Abbreviations
+if status is-interactive
+    abbr --add gcpse "download_bigid_file compose"
+    abbr --add gimgse "download_bigid_file images"
+    abbr --add gscanse "download_bigid_file images-scanner"
+    abbr --add glabse "download_bigid_file images-labeler"
+end
 
 # Registry Logins
 function bidlogin -d "Login to BigID Docker registry"
@@ -58,13 +61,15 @@ function bidlogin -d "Login to BigID Docker registry"
 end
 
 function ecrlogin -d "Login to AWS ECR"
-    aws --profile bigid-ci ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin {{ .aws_account_id }}.dkr.ecr.us-east-1.amazonaws.com
+    aws --profile bigid-ci ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 656782941097.dkr.ecr.us-east-1.amazonaws.com
 end
 
-# AWS Logs
-alias awslogs-groups "aws logs describe-log-groups --query 'logGroups[*].logGroupName' --output text | tr -s '\t' '\n' | sort"
-alias awslogs-tailf "aws logs tail --follow"
-alias awslogs-15m "aws logs tail --since 15m"
+# AWS Logs Abbreviations
+if status is-interactive
+    abbr --add awslogs-groups "aws logs describe-log-groups --query 'logGroups[*].logGroupName' --output text | tr -s '\t' '\n' | sort"
+    abbr --add awslogs-tailf "aws logs tail --follow"
+    abbr --add awslogs-15m "aws logs tail --since 15m"
+end
 
 function awslogs-trace
     set log_group $argv[1]
@@ -77,12 +82,18 @@ function awslogs-trace
     aws logs tail --follow $log_group --filter-pattern "\"$pattern\""
 end
 
-# Terraform
-alias tap "terraform apply --auto-approve"
-alias tda "terraform destroy --auto-approve"
-alias tsl "terraform state list"
-alias tit "terraform init"
-alias tout "terraform output"
+# Terraform Abbreviations
+if status is-interactive
+    abbr --add tf terraform
+    abbr --add tap "terraform apply --auto-approve"
+    abbr --add tda "terraform destroy --auto-approve"
+    abbr --add tsl "terraform state list"
+    abbr --add tit "terraform init"
+    abbr --add tout "terraform output"
+    abbr --add tplan "terraform plan"
+    abbr --add tfmt "terraform fmt"
+    abbr --add tval "terraform validate"
+end
 
 function tlo -d "Lock a file"
     sudo chflags uchg $argv[1]
