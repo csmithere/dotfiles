@@ -106,9 +106,13 @@ format = 'on [$symbol(\($project\))]($style) '
 symbol = "󱇶 "
 
 [kubernetes]
-format = 'on [$symbol$context( \($namespace\))]($style) '
+format = 'on [$symbol$cluster( \($namespace\))]($style) '
 symbol = "☸ "
+style = "bold blue"
 disabled = false
+detect_files = ["k8s", "Dockerfile", "skaffold.yaml", "helmfile.yaml"]
+detect_extensions = ["yaml", "yml"]
+detect_folders = ["k8s"]
 
 [git_branch]
 symbol = " "
