@@ -106,19 +106,20 @@ format = 'on [$symbol(\($project\))]($style) '
 symbol = "󱇶 "
 
 [kubernetes]
-format = 'on [$symbol$cluster( \($namespace\))]($style) '
+format = 'on [$symbol$context( \($namespace\))]($style) '
 symbol = "☸ "
 disabled = false
-detect_files = ["k8s", "Dockerfile", "skaffold.yaml", "helmfile.yaml"]
-detect_extensions = ["yaml", "yml"]
-detect_folders = ["k8s"]
 
+# AWS EKS - extract cluster name from ARN
 [[kubernetes.contexts]]
-context_pattern = ".*eks.*|.*aws.*"
+context_pattern = "arn:aws:eks:[^:]+:[^:]+:cluster/(?P<cluster>.+)"
+context_alias = "$cluster"
 style = "bold #FF9900"
 
+# GCP GKE - extract cluster name from gke_ format
 [[kubernetes.contexts]]
-context_pattern = ".*gke.*|.*gcp.*"
+context_pattern = "gke_[^_]+_[^_]+_(?P<cluster>.+)"
+context_alias = "$cluster"
 style = "bold #4285F4"
 
 [git_branch]
