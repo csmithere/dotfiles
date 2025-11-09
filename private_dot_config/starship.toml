@@ -7,7 +7,7 @@
 # Line 3: The input character
 format = """
 $directory$git_branch$git_commit$git_status$python
-$username$hostname$aws$azure$gcloud$buf$bun$c$cpp$cmake$conda$crystal$dart$deno$docker_context$elixir$elm$fennel$fossil_branch$golang$guix_shell$haskell$haxe$hg_branch$java$julia$kotlin$lua$memory_usage$meson$nim$nix_shell$ocaml$perl$php$pijul_channel$pixi$rlang$ruby$rust$scala$swift$zig$gradle$cmd_duration
+$username$hostname$aws$azure$gcloud$kubernetes$buf$bun$c$cpp$cmake$conda$crystal$dart$deno$docker_context$elixir$elm$fennel$fossil_branch$golang$guix_shell$haskell$haxe$hg_branch$java$julia$kotlin$lua$memory_usage$meson$nim$nix_shell$ocaml$perl$php$pijul_channel$pixi$rlang$ruby$rust$scala$swift$zig$gradle$cmd_duration
 $battery$character"""
 
 # Set to false for a cleaner multi-line prompt without an extra leading blank line.
@@ -104,6 +104,11 @@ symbol = " "
 [gcloud]
 format = 'on [$symbol(\($project\))]($style) '
 symbol = "󱇶 "
+
+[kubernetes]
+format = 'on [$symbol$context( \($namespace\))]($style) '
+symbol = "☸ "
+disabled = false
 
 [git_branch]
 symbol = " "
