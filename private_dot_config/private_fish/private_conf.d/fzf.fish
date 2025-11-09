@@ -5,6 +5,9 @@ set -q FZF_DISABLE_KEYBINDINGS; or set -U FZF_DISABLE_KEYBINDINGS 0
 set -q FZF_PREVIEW_FILE_CMD; or set -U FZF_PREVIEW_FILE_CMD "head -n 10"
 set -q FZF_PREVIEW_DIR_CMD; or set -U FZF_PREVIEW_DIR_CMD "ls"
 
+# Use ripgrep for faster file searching (respects .gitignore)
+set -q FZF_FIND_FILE_COMMAND; or set -U FZF_FIND_FILE_COMMAND "rg --files --hidden --follow --glob '!.git' \$dir 2>/dev/null"
+
 if test "$FZF_DISABLE_KEYBINDINGS" -ne 1
     if test "$FZF_LEGACY_KEYBINDINGS" -eq 1
         bind \ct '__fzf_find_file'
