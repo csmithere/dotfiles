@@ -108,11 +108,18 @@ symbol = "󱇶 "
 [kubernetes]
 format = 'on [$symbol$cluster( \($namespace\))]($style) '
 symbol = "☸ "
-style = "bold blue"
 disabled = false
 detect_files = ["k8s", "Dockerfile", "skaffold.yaml", "helmfile.yaml"]
 detect_extensions = ["yaml", "yml"]
 detect_folders = ["k8s"]
+
+[[kubernetes.contexts]]
+context_pattern = ".*eks.*|.*aws.*"
+style = "bold #FF9900"
+
+[[kubernetes.contexts]]
+context_pattern = ".*gke.*|.*gcp.*"
+style = "bold #4285F4"
 
 [git_branch]
 symbol = " "
