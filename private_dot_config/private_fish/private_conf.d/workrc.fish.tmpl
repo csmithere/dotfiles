@@ -50,23 +50,15 @@ alias glabse "download_bigid_file images-labeler"
 
 # Registry Logins
 function bidlogin -d "Login to BigID Docker registry"
-    if not set -q BIGID_DEVOPS_USER; or not set -q BIGID_DEVOPS_PASS
-        echo "Error: BIGID_DEVOPS_USER and BIGID_DEVOPS_PASS must be set as environment variables."
+    if not set -q DOCKERHUB_USERNAME; or not set -q DOCKERHUB_TOKEN
+        echo "Error: DOCKERHUB_USERNAME and DOCKERHUB_TOKEN must be set as environment variables."
         return 1
     end
-    docker login -u "$BIGID_DEVOPS_USER" -p "$BIGID_DEVOPS_PASS"
-end
-
-function cslogin -d "Login to CS BigID Docker registry"
-    if not set -q CS_BIGID_USER; or not set -q CS_BIGID_PASS
-        echo "Error: CS_BIGID_USER and CS_BIGID_PASS must be set as environment variables."
-        return 1
-    end
-    docker login -u "$CS_BIGID_USER" --password "$CS_BIGID_PASS"
+    docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_TOKEN"
 end
 
 function ecrlogin -d "Login to AWS ECR"
-    aws --profile bigid-ci ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 656782941097.dkr.ecr.us-east-1.amazonaws.com
+    aws --profile bigid-ci ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin {{ .aws_account_id }}.dkr.ecr.us-east-1.amazonaws.com
 end
 
 # AWS Logs
