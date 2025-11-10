@@ -13,12 +13,14 @@ return {
       -- Maximum file size to render (in MB)
       max_file_size = 10.0,
 
-      -- Headings configuration
-      headings = {
+      -- Heading configuration (note: singular, not plural)
+      heading = {
+        -- Enable heading rendering
+        enabled = true,
         -- Characters to use for heading icons
         icons = { '󰲡 ', '󰲣 ', '󰲥 ', '󰲧 ', '󰲩 ', '󰲫 ' },
-        -- Whether to show heading signs
-        sign = true,
+        -- Sign column icons for each heading level
+        signs = { '󰫎 ', '󰫏 ', '󰫐 ', '󰫑 ', '󰫒 ', '󰫓 ' },
         -- Heading background colors
         backgrounds = {
           'RenderMarkdownH1Bg',
