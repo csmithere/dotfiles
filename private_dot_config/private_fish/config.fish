@@ -40,3 +40,11 @@ end
 
 # 1Password SSH Agent
 set -gx SSH_AUTH_SOCK "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+
+# Pre-Commit
+set -x PRE_COMMIT_COLOR never
+
+# Kubectl Completion
+if command -v kubectl >/dev/null 2>&1
+    kubectl completion fish | source
+end
