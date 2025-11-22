@@ -1,10 +1,7 @@
 # Switch AWS profile interactively or set it directly
 function awsp -d "Switch AWS profile interactively or set it directly"
     # Check if AWS CLI is available
-    if not command -v aws >/dev/null 2>&1
-        echo "Error: AWS CLI not found. Please install it first." >&2
-        return 1
-    end
+    __require_command aws "AWS CLI"; or return 1
 
     if count $argv -gt 0
         # Direct profile set
@@ -12,7 +9,7 @@ function awsp -d "Switch AWS profile interactively or set it directly"
 
         # Verify profile exists
         if not aws configure list-profiles | grep -q "^$profile\$"
-            echo "Error: Profile '$profile' not found." >&2
+            __error_msg "Profile '$profile' not found."
             echo "Available profiles:" >&2
             aws configure list-profiles >&2
             return 1
@@ -22,23 +19,19 @@ function awsp -d "Switch AWS profile interactively or set it directly"
 
         if count $argv -gt 1
             set -gx AWS_REGION $argv[2]
-            echo "✅ AWS profile set to:" (set_color green) "$AWS_PROFILE" (set_color normal) " (Region: $AWS_REGION)"
+            __success_msg "AWS profile set to:" (__highlight "$AWS_PROFILE") "(Region: $AWS_REGION)"
         else
             set -l region (aws configure get profile.$profile.region 2>/dev/null)
             if test -n "$region"
                 set -gx AWS_REGION $region
-                echo "✅ AWS profile set to:" (set_color green) "$AWS_PROFILE" (set_color normal) " (Region: $region)"
+                __success_msg "AWS profile set to:" (__highlight "$AWS_PROFILE") "(Region: $region)"
             else
-                echo "✅ AWS profile set to:" (set_color green) "$AWS_PROFILE" (set_color normal)
+                __success_msg "AWS profile set to:" (__highlight "$AWS_PROFILE")
             end
         end
     else
         # Interactive selection with fzf
-        if not command -v fzf >/dev/null 2>&1
-            echo "Error: fzf not found. Please install it or provide a profile name directly." >&2
-            echo "Usage: awsp <profile-name> [region]" >&2
-            return 1
-        end
+        __require_fzf "awsp <profile-name> [region]"; or return 1
 
         set -l profile (aws configure list-profiles | fzf --prompt="Select AWS Profile: ")
 
@@ -47,9 +40,9 @@ function awsp -d "Switch AWS profile interactively or set it directly"
             set -l region (aws configure get profile.$profile.region 2>/dev/null)
             if test -n "$region"
                 set -gx AWS_REGION $region
-                echo "✅ AWS profile set to:" (set_color green) "$AWS_PROFILE" (set_color normal) " (Region: $region)"
+                __success_msg "AWS profile set to:" (__highlight "$AWS_PROFILE") "(Region: $region)"
             else
-                echo "✅ AWS profile set to:" (set_color green) "$AWS_PROFILE" (set_color normal)
+                __success_msg "AWS profile set to:" (__highlight "$AWS_PROFILE")
             end
         else if set -q AWS_PROFILE
             echo "Current AWS profile is:" (set_color blue) "$AWS_PROFILE" (set_color normal)

@@ -26,29 +26,21 @@ function download_bigid_file -d "Downloads BigID files"
         return 1
     end
 
+    if test -z "$BIGID_DOWNLOADS_ACCESS_TOKEN"
+        __error_msg "BIGID_DOWNLOADS_ACCESS_TOKEN is not set or empty."
+        return 1
+    end
+
+    if test -z "$RELEASE"
+        __error_msg "RELEASE is not set or empty."
+        return 1
+    end
+
     set -l file_name "bigid-$file_type-release-$RELEASE.tar.gz"
     set -l url "https://us.downloads.bigid.com/?file=release-$RELEASE/$file_name"
 
-    if not set -q BIGID_DOWNLOADS_ACCESS_TOKEN
-        echo "Error: BIGID_DOWNLOADS_ACCESS_TOKEN is not set."
-        return 1
-    end
-
-    if not set -q RELEASE
-        echo "Error: RELEASE is not set."
-        return 1
-    end
-
     echo "Downloading $file_name..."
     curl -H "Authorization: $BIGID_DOWNLOADS_ACCESS_TOKEN" -L "$url" -o "$file_name"
-end
-
-# BigID Download Abbreviations
-if status is-interactive
-    abbr --add gcpse "download_bigid_file compose"
-    abbr --add gimgse "download_bigid_file images"
-    abbr --add gscanse "download_bigid_file images-scanner"
-    abbr --add glabse "download_bigid_file images-labeler"
 end
 
 # Registry Logins
@@ -64,26 +56,75 @@ function ecrlogin -d "Login to AWS ECR"
     aws --profile bigid-ci ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 656782941097.dkr.ecr.us-east-1.amazonaws.com
 end
 
-# AWS Logs Abbreviations
-if status is-interactive
-    abbr --add awslogs-groups "aws logs describe-log-groups --query 'logGroups[*].logGroupName' --output text | tr -s '\t' '\n' | sort"
-    abbr --add awslogs-tailf "aws logs tail --follow"
-    abbr --add awslogs-15m "aws logs tail --since 15m"
-end
-
-function awslogs-trace
-    set log_group $argv[1]
-    set pattern $argv[2]
+function awslogs-trace -d "Tail AWS CloudWatch logs with filter pattern"
+    set -l log_group $argv[1]
+    set -l pattern $argv[2]
     if test -z "$log_group" -o -z "$pattern"
-        echo "Usage: awlogs-trace <log-group-name> <pattern-to-find>"
+        echo "Usage: awslogs-trace <log-group-name> <pattern-to-find>" >&2
+        echo "Example: awslogs-trace /aws/lambda/my-function ERROR" >&2
         return 1
     end
     # The filter pattern requires quotes around the string you're searching for
     aws logs tail --follow $log_group --filter-pattern "\"$pattern\""
 end
 
-# Terraform Abbreviations
+# Abbreviations
 if status is-interactive
+    # BigID Download
+    abbr --add gcpse "download_bigid_file compose"
+    abbr --add gimgse "download_bigid_file images"
+    abbr --add gscanse "download_bigid_file images-scanner"
+    abbr --add glabse "download_bigid_file images-labeler"
+
+    # AWS Logs
+    abbr --add awslogs-groups "aws logs describe-log-groups --query 'logGroups[*].logGroupName' --output text | tr -s '\t' '\n' | sort"
+    abbr --add awslogs-tailf "aws logs tail --follow"
+    abbr --add awslogs-15m "aws logs tail --since 15m"
+
+    # Kubernetes
+    abbr --add k kubectl
+    abbr --add kg kubectl get
+    abbr --add kd kubectl describe
+    abbr --add kdel kubectl delete
+    abbr --add kl kubectl logs
+    abbr --add klf kubectl logs -f
+    abbr --add ke kubectl exec -it
+    abbr --add kpf kubectl port-forward
+    abbr --add kap kubectl apply -f
+    abbr --add kgp kubectl get pods
+    abbr --add kgn kubectl get nodes
+    abbr --add kgs kubectl get services
+    abbr --add kgd kubectl get deployments
+    abbr --add kgi kubectl get ingress
+    abbr --add kgpvc kubectl get pvc
+    abbr --add kdp kubectl describe pod
+    abbr --add kdn kubectl describe node
+    abbr --add kds kubectl describe service
+    abbr --add kdd kubectl describe deployment
+
+    # Helm
+    abbr --add h helm
+    abbr --add hl helm list
+    abbr --add hi helm install
+    abbr --add hu helm upgrade
+    abbr --add hun helm uninstall
+    abbr --add hh helm history
+    abbr --add hr helm rollback
+
+    # Docker
+    abbr --add d docker
+    abbr --add dc docker-compose
+    abbr --add dps docker ps
+    abbr --add dpsa docker ps -a
+    abbr --add di docker images
+    abbr --add dex docker exec -it
+    abbr --add dl docker logs
+    abbr --add dlf docker logs -f
+    abbr --add drm docker rm
+    abbr --add drmi docker rmi
+    abbr --add dprune docker system prune -af
+
+    # Terraform
     abbr --add tf terraform
     abbr --add tap "terraform apply --auto-approve"
     abbr --add tda "terraform destroy --auto-approve"
@@ -93,14 +134,43 @@ if status is-interactive
     abbr --add tplan "terraform plan"
     abbr --add tfmt "terraform fmt"
     abbr --add tval "terraform validate"
+    abbr --add twl terraform workspace list
+    abbr --add twn terraform workspace new
+    abbr --add twd terraform workspace delete
 end
 
-function tlo -d "Lock a file"
-    sudo chflags uchg $argv[1]
+function tlo -d "Lock a file (make immutable)"
+    if test (count $argv) -eq 0
+        echo "Usage: tlo <file>" >&2
+        echo "Locks a file to prevent modifications (requires sudo)" >&2
+        return 1
+    end
+
+    set -l file $argv[1]
+    if not test -e "$file"
+        __error_msg "File '$file' does not exist"
+        return 1
+    end
+
+    sudo chflags uchg "$file"
+    and __success_msg "Locked: $file"
 end
 
-function tul -d "Unlock a file"
-    sudo chflags nouchg $argv[1]
+function tul -d "Unlock a file (make mutable)"
+    if test (count $argv) -eq 0
+        echo "Usage: tul <file>" >&2
+        echo "Unlocks a file to allow modifications (requires sudo)" >&2
+        return 1
+    end
+
+    set -l file $argv[1]
+    if not test -e "$file"
+        __error_msg "File '$file' does not exist"
+        return 1
+    end
+
+    sudo chflags nouchg "$file"
+    and __success_msg "Unlocked: $file"
 end
 
 # Misc AWS
@@ -124,4 +194,51 @@ function els -d "List ECS services in a cluster"
         return 1
     end
     aws ecs list-services --cluster "$cluster" --output text
+end
+
+# AWS Quick Lookups
+function aws-ec2 -d "List EC2 instances with details"
+    aws ec2 describe-instances --query 'Reservations[*].Instances[*].[InstanceId,State.Name,InstanceType,PrivateIpAddress,Tags[?Key==`Name`].Value|[0]]' --output table
+end
+
+function aws-s3 -d "List S3 buckets"
+    aws s3 ls
+end
+
+function aws-rds -d "List RDS instances"
+    aws rds describe-db-instances --query 'DBInstances[*].[DBInstanceIdentifier,Engine,DBInstanceStatus,Endpoint.Address]' --output table
+end
+
+function aws-lambda -d "List Lambda functions"
+    aws lambda list-functions --query 'Functions[*].[FunctionName,Runtime,LastModified]' --output table
+end
+
+function aws-eks -d "List EKS clusters"
+    aws eks list-clusters --output table
+end
+
+# Azure Quick Lookups
+function az-vm -d "List Azure VMs"
+    az vm list --output table
+end
+
+function az-aks -d "List AKS clusters"
+    az aks list --output table
+end
+
+function az-rg -d "List Azure resource groups"
+    az group list --output table
+end
+
+# GCP Quick Lookups
+function gcp-gce -d "List GCE instances"
+    gcloud compute instances list --format="table(name,zone,machineType,status,networkInterfaces[0].networkIP)"
+end
+
+function gcp-gke -d "List GKE clusters"
+    gcloud container clusters list --format="table(name,location,status,currentMasterVersion,currentNodeCount)"
+end
+
+function gcp-gcs -d "List GCS buckets"
+    gcloud storage buckets list --format="table(name,location,storageClass,timeCreated)"
 end

@@ -48,3 +48,100 @@ set -x PRE_COMMIT_COLOR never
 if command -v kubectl >/dev/null 2>&1
     kubectl completion fish | source
 end
+
+# Kubernetes context and namespace switchers
+function kctx -d "Switch kubectl context interactively"
+    __require_command kubectl; or return 1
+
+    if count $argv -gt 0
+        kubectl config use-context $argv[1]
+        if test $status -eq 0
+            __success_msg "Context switched to:" (__highlight "$argv[1]")
+        else
+            __error_msg "Failed to switch to context '$argv[1]'"
+            echo "Available contexts:" >&2
+            kubectl config get-contexts -o name >&2
+            return 1
+        end
+    else
+        if command -v fzf >/dev/null 2>&1
+            set -l context (kubectl config get-contexts -o name | fzf --prompt="Select K8s Context: ")
+            if test -n "$context"
+                kubectl config use-context "$context"
+                if test $status -eq 0
+                    __success_msg "Context switched to:" (__highlight "$context")
+                else
+                    __error_msg "Failed to switch to context '$context'"
+                    return 1
+                end
+            end
+        else
+            kubectl config get-contexts
+        end
+    end
+end
+
+function kns -d "Switch kubectl namespace interactively"
+    __require_command kubectl; or return 1
+
+    if count $argv -gt 0
+        kubectl config set-context --current --namespace=$argv[1]
+        if test $status -eq 0
+            __success_msg "Namespace set to:" (__highlight "$argv[1]")
+        else
+            __error_msg "Failed to set namespace to '$argv[1]'"
+            echo "Available namespaces:" >&2
+            kubectl get namespaces -o name >&2
+            return 1
+        end
+    else
+        if command -v fzf >/dev/null 2>&1
+            set -l namespace (kubectl get namespaces -o jsonpath='{.items[*].metadata.name}' | tr ' ' '\n' | fzf --prompt="Select Namespace: ")
+            if test -n "$namespace"
+                kubectl config set-context --current --namespace="$namespace"
+                if test $status -eq 0
+                    __success_msg "Namespace set to:" (__highlight "$namespace")
+                else
+                    __error_msg "Failed to set namespace to '$namespace'"
+                    return 1
+                end
+            end
+        else
+            kubectl get namespaces
+        end
+    end
+end
+
+# Multi-cloud context display
+function cloud-ctx -d "Show current cloud contexts"
+    echo "☁️  Cloud Contexts:"
+    echo ""
+    if set -q AWS_PROFILE
+        echo "  AWS Profile: $AWS_PROFILE"
+        if set -q AWS_REGION
+            echo "  AWS Region:  $AWS_REGION"
+        end
+    end
+    if command -v gcloud >/dev/null 2>&1
+        set -l gcp_project (gcloud config get-value project 2>/dev/null)
+        if test -n "$gcp_project"
+            echo "  GCP Project: $gcp_project"
+        end
+    end
+    if command -v az >/dev/null 2>&1
+        set -l az_sub (az account show --query name -o tsv 2>/dev/null)
+        if test -n "$az_sub"
+            echo "  Azure Sub:   $az_sub"
+        end
+    end
+    if command -v kubectl >/dev/null 2>&1
+        set -l k8s_ctx (kubectl config current-context 2>/dev/null)
+        set -l k8s_ns (kubectl config view --minify --output 'jsonpath={..namespace}' 2>/dev/null)
+        if test -n "$k8s_ctx"
+            echo "  K8s Context: $k8s_ctx"
+            if test -n "$k8s_ns"
+                echo "  K8s NS:      $k8s_ns"
+            end
+        end
+    end
+end

@@ -1,10 +1,7 @@
 # SSH into a GCP compute instance
 function gssh -d "SSH into GCP instance"
     # Check if gcloud is installed
-    if not command -v gcloud >/dev/null 2>&1
-        echo "Error: gcloud command not found. Please install Google Cloud SDK." >&2
-        return 1
-    end
+    __require_command gcloud "Google Cloud SDK"; or return 1
 
     # Check if an instance name was provided
     if test (count $argv) -lt 1
@@ -20,7 +17,7 @@ function gssh -d "SSH into GCP instance"
     set -l gcp_user (gcloud config get-value account 2>/dev/null | string replace '@' '_' | string replace '.' '_')
 
     if test -z "$gcp_user"
-        echo "Error: No gcloud account configured. Run 'gcloud auth login' first." >&2
+        __error_msg "No gcloud account configured. Run 'gcloud auth login' first."
         return 1
     end
 
