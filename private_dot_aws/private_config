@@ -3,11 +3,11 @@ sso_start_url = https://d-906767c7f0.awsapps.com/start/#
 sso_region = us-east-1
 sso_account_id = 218710310134
 sso_role_name = AdministratorAccessPreSales
-region = us-east-2
+region = us-east-1
 [profile dev-presales]
 sso_start_url = https://d-906767c7f0.awsapps.com/start/#
 sso_region = us-east-1
 sso_account_id = 218710310134
 sso_role_name = AdministratorAccessPreSales
-region = us-east-2
+region = us-east-1
 
