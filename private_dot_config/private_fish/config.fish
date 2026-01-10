@@ -1,3 +1,4 @@
+set PATH $HOME/.local/bin $PATH
 if status is-interactive
     # Commands to run in interactive sessions can go here
 
@@ -145,3 +146,16 @@ function cloud-ctx -d "Show current cloud contexts"
         end
     end
 end
+
+# Added by LM Studio CLI (lms)
+set -gx PATH $PATH /Users/csmith/.lmstudio/bin
+# End of LM Studio CLI section
+
+
+# Added by OrbStack: command-line tools and integration
+# This won't be added again if you remove it.
+source ~/.orbstack/shell/init2.fish 2>/dev/null || :
+
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+set --export --prepend PATH "/Users/csmith/.rd/bin"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)

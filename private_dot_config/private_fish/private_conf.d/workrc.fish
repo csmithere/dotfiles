@@ -126,8 +126,6 @@ if status is-interactive
 
     # Terraform
     abbr --add tf terraform
-    abbr --add tap "terraform apply --auto-approve"
-    abbr --add tda "terraform destroy --auto-approve"
     abbr --add tsl "terraform state list"
     abbr --add tit "terraform init"
     abbr --add tout "terraform output"
@@ -137,6 +135,17 @@ if status is-interactive
     abbr --add twl terraform workspace list
     abbr --add twn terraform workspace new
     abbr --add twd terraform workspace delete
+    abbr --add tss "terraform state show"
+    abbr --add tget "terraform get -update"
+    abbr --add tref "terraform refresh"
+
+    # Safe apply/destroy (no auto-approve)
+    abbr --add ta "terraform apply"
+    abbr --add td "terraform destroy"
+
+    # For rare cases you really need auto-approve (explicit)
+    abbr --add tapprove "terraform apply -auto-approve"
+    abbr --add tdapprove "terraform destroy -auto-approve"
 end
 
 function tlo -d "Lock a file (make immutable)"

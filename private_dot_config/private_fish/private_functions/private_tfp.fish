@@ -7,21 +7,19 @@ function tfp -d "Terraform plan with better formatting"
     terraform plan -out=tfplan.out $argv
 
     if test $status -eq 0
-        # Convert plan to readable format
-        terraform show -no-color tfplan.out > tfplan.txt
+        # Store plan file for use by other functions
+        set -g LAST_TF_PLAN tfplan.out
 
-        # Display with bat if available, otherwise use cat
+        # Display with color
         if command -v bat >/dev/null 2>&1
-            bat tfplan.txt --language=terraform
+            terraform show tfplan.out | bat --language=terraform --file-name="Terraform Plan"
         else
-            cat tfplan.txt
+            terraform show tfplan.out
         end
 
         echo ""
-        echo "Plan saved to: tfplan.out"
-        echo "Readable plan saved to: tfplan.txt"
-        echo ""
-        echo "To apply: terraform apply tfplan.out"
+        __success_msg "Plan saved to:" (__highlight "tfplan.out")
+        echo "To apply: terraform apply tfplan.out (or use 'tfa')"
     else
         __error_msg "Terraform plan failed"
         return 1
