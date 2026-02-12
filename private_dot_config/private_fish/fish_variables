@@ -8,8 +8,9 @@ SETUVAR Z_CMD:z
 SETUVAR Z_DATA:/Users/csmith/\x2elocal/share/z/data
 SETUVAR Z_DATA_DIR:/Users/csmith/\x2elocal/share/z
 SETUVAR Z_EXCLUDE:\x5e/Users/csmith\x24
-SETUVAR --export __ABBR_TIPS_KEYS:a__\x1ea__\x1ea__sssl\x1ea__sssl\x1ea__sssl\x1ea__sssl\x1ea__
-SETUVAR --export __ABBR_TIPS_VALUES:\x1e\x1estern\x1estern\x1estern\x1estern\x1e
+SETUVAR --export __ABBR_TIPS_KEYS:a__\x1ea__\x1ea__
+SETUVAR --export __ABBR_TIPS_VALUES:\x1e\x1e
+SETUVAR --export __ANTHROPIC_API_KEY_CACHED:sk\x2dant\x2dapi03\x2dnAtZP\x2dgJHygl2GbWgfK3G4cr0VgJq9uw9Oy5NxYGIABRizhRTrOGdu19ZSuzSG2asLBd8z6IyehI9ThnLcK39A\x2dJ_3FwgAA
 SETUVAR __fish_initialized:4300
 SETUVAR _fisher_decors_2F_fish_2D_colored_2D_man_files:\x7e/\x2econfig/fish/functions/man\x2efish
 SETUVAR _fisher_franciscolourenco_2F_done_files:\x7e/\x2econfig/fish/conf\x2ed/done\x2efish

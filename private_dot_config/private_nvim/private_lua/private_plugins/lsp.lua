@@ -17,33 +17,20 @@ return {
       require("mason-lspconfig").setup({
         ensure_installed = {
           "lua_ls",
+          "gopls",       -- Go LSP
           "terraformls",
           "tflint",
-          "marksman",  -- Markdown LSP
-          "yamlls"     -- YAML LSP
+          "marksman",    -- Markdown LSP
+          "yamlls",      -- YAML LSP
         },
       })
 
-      -- LSP keybindings callback
+      -- LSP keybindings are now managed centrally in lua/config/keymaps.lua
+      -- This autocmd is kept for future buffer-local LSP configurations if needed
       vim.api.nvim_create_autocmd('LspAttach', {
         callback = function(args)
-          local bufnr = args.buf
-          local bufopts = { noremap=true, silent=true, buffer=bufnr }
-          vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-          vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-          vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-          vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-          vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-          vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
-          vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
-          vim.keymap.set('n', '<space>wl', function()
-            print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-          end, bufopts)
-          vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
-          vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
-          vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
-          vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-          vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
+          -- Buffer-local LSP setup can go here if needed
+          -- Most keymaps are now in lua/config/keymaps.lua
         end,
       })
 
@@ -108,8 +95,33 @@ return {
         }
       })
 
+      -- Configure Go LSP
+      vim.lsp.config('gopls', {
+        cmd = { 'gopls' },
+        filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
+        root_markers = { 'go.work', 'go.mod', '.git' },
+        capabilities = capabilities,
+        settings = {
+          gopls = {
+            analyses = {
+              unusedparams = true,
+              shadow = true,
+              fieldalignment = true,
+              nilness = true,
+            },
+            staticcheck = true,
+            gofumpt = true,
+            usePlaceholders = true,
+            completeUnimported = true,
+            ["local"] = "github.com/bigid/bigid-operator",
+            directoryFilters = { "-.git", "-vendor", "-testbin", "-bin" },
+          },
+        },
+      })
+
       -- Enable LSP servers
       vim.lsp.enable('lua_ls')
+      vim.lsp.enable('gopls')
       vim.lsp.enable('terraformls')
       vim.lsp.enable('marksman')
       vim.lsp.enable('yamlls')

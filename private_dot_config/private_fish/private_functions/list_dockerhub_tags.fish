@@ -18,7 +18,7 @@ function list_dockerhub_tags -d "List the 20 latest DockerHub tags for a reposit
     echo "---"
 
     # Fetch the 20 latest tags for the repository
-    set -l api_url "https://hub.docker.com/v2/repositories/$repo/tags/?page_size=20"
+    set -l api_url "https://hub.docker.com/v2/repositories/$repo/tags/?page_size=20&ordering=last_updated"
 
     curl -s -H "Authorization: JWT $api_token" "$api_url" | jq -r '.results[].name'
 

@@ -12,9 +12,7 @@ return {
       vim.g.mkdp_auto_close = 0
       vim.g.mkdp_theme = 'dark'
 
-      -- Keymap to toggle preview
-      vim.keymap.set('n', '<leader>mp', '<cmd>MarkdownPreviewToggle<cr>',
-        { desc = 'Toggle markdown preview' })
+      -- Keymaps are now managed centrally in lua/config/keymaps.lua
     end,
   },
 
@@ -32,10 +30,10 @@ return {
       -- Enable automatic bullet continuation
       vim.g.bullets_set_mappings = 1
 
-      -- Enable checkbox toggling with <leader>x
+      -- Enable checkbox toggling
       vim.g.bullets_checkbox_markers = ' .oOX'
-      vim.keymap.set('n', '<leader>mx', '<cmd>ToggleCheckbox<cr>',
-        { desc = 'Toggle markdown checkbox' })
+
+      -- Keymaps are now managed centrally in lua/config/keymaps.lua
     end,
   },
 
@@ -50,9 +48,7 @@ return {
       -- Enable table mode for markdown
       vim.g.table_mode_markdown = 1
 
-      -- Keybinding to toggle table mode
-      vim.keymap.set('n', '<leader>mt', '<cmd>TableModeToggle<cr>',
-        { desc = 'Toggle table mode' })
+      -- Keymaps are now managed centrally in lua/config/keymaps.lua
     end,
   },
 
@@ -65,9 +61,7 @@ return {
       vim.g.vmt_fence_text = 'TOC'
       vim.g.vmt_fence_closing_text = '/TOC'
 
-      -- Keymap to generate TOC
-      vim.keymap.set('n', '<leader>mtoc', '<cmd>GenTocGFM<cr>',
-        { desc = 'Generate markdown TOC' })
+      -- Keymaps are now managed centrally in lua/config/keymaps.lua
     end,
   },
 }

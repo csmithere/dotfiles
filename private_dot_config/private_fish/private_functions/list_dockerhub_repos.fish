@@ -26,8 +26,8 @@ function list_dockerhub_repos -d "List all DockerHub repositories for a namespac
         # Print the repository names from the current page
         echo "$response" | jq -r '.results[].name'
 
-        # Get the URL for the next page
-        set api_url (echo "$response" | jq -r '.next')
+        # Get the URL for the next page (// empty returns nothing when .next is null)
+        set api_url (echo "$response" | jq -r '.next // empty')
     end
 
     echo "---"

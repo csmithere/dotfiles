@@ -16,6 +16,10 @@ vim.opt.scrolloff = 8
 vim.opt.wrap = false
 vim.opt.termguicolors = true
 
+-- Terminal buffer settings
+vim.opt.scrollback = 50000
+vim.opt.equalalways = false
+
 -- Clipboard integration
 vim.opt.clipboard = 'unnamedplus'
 
@@ -45,6 +49,9 @@ vim.opt.rtp:prepend(lazypath)
 
 -- This line tells lazy to load plugin specs from the lua/plugins/ directory
 require("lazy").setup("plugins")
+
+-- Load centralized keymaps (VSCode/Cursor-like)
+require("config.keymaps")
 
 -- File Definitions
 vim.cmd [[autocmd BufNewFile,BufRead *.tf,*.tfvars set filetype=terraform]]

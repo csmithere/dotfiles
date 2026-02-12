@@ -18,9 +18,6 @@ return {
       },
     })
 
-    -- Keymaps
-    vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>", {
-      desc = "Toggle file explorer",
-    })
+    -- Keymaps are now managed centrally in lua/config/keymaps.lua
   end,
 }

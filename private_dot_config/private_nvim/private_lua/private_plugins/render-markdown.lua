@@ -71,10 +71,8 @@ return {
           web = { pattern = '^http[s]?://', icon = '󰖟 ' },
         },
       },
-
-      -- Toggle rendering keybinding
-      vim.keymap.set('n', '<leader>mr', '<cmd>RenderMarkdown toggle<cr>',
-        { desc = 'Toggle markdown rendering' }),
     })
+
+    -- Keymaps are now managed centrally in lua/config/keymaps.lua
   end,
 }

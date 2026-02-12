@@ -7,13 +7,14 @@ vim.opt_local.shiftwidth = 2
 vim.opt_local.softtabstop = 2
 vim.opt_local.expandtab = true
 
--- Auto-format on save with LSP
-local format_on_save = vim.api.nvim_create_augroup("YAMLFormat", { clear = true })
+-- Convert tabs to spaces on save (works even on invalid YAML)
 vim.api.nvim_create_autocmd("BufWritePre", {
-  group = format_on_save,
-  pattern = "*.yaml,*.yml",
+  group = vim.api.nvim_create_augroup("YAMLRetab", { clear = true }),
+  buffer = 0,
   callback = function()
-    vim.lsp.buf.format({ async = false })
+    local view = vim.fn.winsaveview()
+    vim.cmd("retab")
+    vim.fn.winrestview(view)
   end,
 })
 
@@ -29,5 +30,5 @@ local opts = { noremap = true, silent = true, buffer = true }
 
 -- Format current file
 vim.keymap.set('n', '<leader>yf', function()
-  vim.lsp.buf.format({ async = false })
+  require("conform").format({ async = false })
 end, vim.tbl_extend('force', opts, { desc = 'YAML format' }))
