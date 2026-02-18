@@ -1,7 +1,7 @@
 # BigID Related
 
 set -gx AWS_PROFILE admin-presales
-set -gx TERM xterm-256color
+# Let tmux set $TERM correctly (tmux-256color) -- don't override here
 
 ###################
 # Alias Functions #
@@ -101,6 +101,28 @@ if status is-interactive
     abbr --add kdn kubectl describe node
     abbr --add kds kubectl describe service
     abbr --add kdd kubectl describe deployment
+
+    # Kubernetes - Output formats
+    abbr --add kgpw "kubectl get pods -o wide"
+    abbr --add kgy  "kubectl get -o yaml"
+
+    # Kubernetes - Additional resources
+    abbr --add kgcm  "kubectl get configmaps"
+    abbr --add kgsec "kubectl get secrets"
+    abbr --add kgss  "kubectl get statefulsets"
+    abbr --add kgns  "kubectl get namespaces"
+
+    # Kubernetes - Rollouts
+    abbr --add kro  "kubectl rollout"
+    abbr --add kros "kubectl rollout status"
+    abbr --add kror "kubectl rollout restart"
+
+    # Kubernetes - Resource usage
+    abbr --add ktop  "kubectl top pods"
+    abbr --add ktopn "kubectl top nodes"
+
+    # Kubernetes - Scale
+    abbr --add ksc "kubectl scale"
 
     # Helm
     abbr --add h helm

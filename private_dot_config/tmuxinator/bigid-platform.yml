@@ -1,0 +1,14 @@
+name: bigid-platform
+root: ~/src/bigid/bigid-platform
+
+windows:
+  - claude:
+      layout: main-vertical
+      panes:
+        - # empty shell ready for claude
+  - k9s:
+      panes:
+        - k9s
+  - shell:
+      panes:
+        - # general purpose shell

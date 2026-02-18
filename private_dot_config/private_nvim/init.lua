@@ -23,6 +23,34 @@ vim.opt.equalalways = false
 -- Clipboard integration
 vim.opt.clipboard = 'unnamedplus'
 
+-- Black-hole register remaps: d/c/x delete without yanking (VS Code behavior)
+-- Use "_ prefix so delete/change never touch the clipboard; only y/yy copies.
+-- Escape hatch: "+d or "ad to explicitly yank-delete into a register.
+local bh = { noremap = true, silent = true }
+
+-- Normal mode delete operators → black hole
+vim.keymap.set('n', 'd', '"_d', bh)
+vim.keymap.set('n', 'dd', '"_dd', bh)
+vim.keymap.set('n', 'D', '"_D', bh)
+
+-- Normal mode change operators → black hole
+vim.keymap.set('n', 'c', '"_c', bh)
+vim.keymap.set('n', 'cc', '"_cc', bh)
+vim.keymap.set('n', 'C', '"_C', bh)
+
+-- Normal mode character delete → black hole
+vim.keymap.set('n', 'x', '"_x', bh)
+vim.keymap.set('n', 'X', '"_X', bh)
+
+-- Visual mode delete/change → black hole
+vim.keymap.set('v', 'd', '"_d', bh)
+vim.keymap.set('v', 'c', '"_c', bh)
+vim.keymap.set('v', 'x', '"_x', bh)
+
+-- Visual mode paste: replace selection without yanking replaced text
+vim.keymap.set('v', 'p', '"_dP', bh)
+vim.keymap.set('v', 'P', '"_dP', bh)
+
 -- Filetype detection
 vim.cmd('filetype plugin indent on')
 

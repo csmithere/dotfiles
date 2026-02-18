@@ -3,8 +3,6 @@ function kclean -d "Remove unreachable contexts from kubeconfig"
 
     echo "Checking contexts for reachability..."
 
-    # Save current context to restore later if it's still valid
-    set -l original_context (kubectl config current-context 2>/dev/null)
     set -l contexts_to_delete
     set -l clusters_to_delete
     set -l users_to_delete
@@ -12,11 +10,8 @@ function kclean -d "Remove unreachable contexts from kubeconfig"
     for context in (kubectl config get-contexts -o name)
         echo -n "Testing $context... "
 
-        # Switch to the context
-        kubectl config use-context $context >/dev/null 2>&1
-
-        # Test if cluster is reachable
-        kubectl cluster-info --request-timeout=2s >/dev/null 2>&1
+        # Test if cluster is reachable without switching context
+        kubectl cluster-info --context $context --request-timeout=2s >/dev/null 2>&1
 
         if test $status -ne 0
             echo "unreachable"
@@ -60,12 +55,5 @@ function kclean -d "Remove unreachable contexts from kubeconfig"
         __success_msg "Removed" (count $contexts_to_delete) "unreachable context(s)"
     else
         __success_msg "All contexts are reachable"
-    end
-
-    # Restore original context if it still exists
-    if test -n "$original_context"
-        if kubectl config get-contexts -o name | grep -q "^$original_context\$"
-            kubectl config use-context $original_context >/dev/null 2>&1
-        end
     end
 end

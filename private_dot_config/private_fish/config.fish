@@ -39,15 +39,21 @@ if command -v aws_completer >/dev/null 2>&1
     complete --command aws --no-files --arguments '(begin; set --local --export COMP_SHELL fish; set --local --export COMP_LINE (commandline); aws_completer | sed \'s/ $//\'; end)'
 end
 
+# Java (openjdk@17 via Homebrew)
+set -gx JAVA_HOME /opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home
+
 # 1Password SSH Agent
 set -gx SSH_AUTH_SOCK "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 
 # Pre-Commit
 set -x PRE_COMMIT_COLOR never
 
-# Kubectl Completion
+# Kubectl Completion (cached for faster startup; delete the cache file to regenerate)
 if command -v kubectl >/dev/null 2>&1
-    kubectl completion fish | source
+    set -l kubectl_cache ~/.config/fish/completions/kubectl.fish
+    if not test -f $kubectl_cache
+        kubectl completion fish >$kubectl_cache
+    end
 end
 
 # Added by LM Studio CLI (lms)
@@ -61,3 +67,8 @@ end
 
 # DockerHub Credentials - use get_registry_user and get_registry_password functions
 # These lazy-load from 1Password only when first called
+
+# Auto-attach to tmux in interactive terminal sessions
+if status is-interactive; and not set -q TMUX; and command -v tmux >/dev/null 2>&1
+    mux
+end
