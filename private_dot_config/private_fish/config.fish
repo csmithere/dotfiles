@@ -57,7 +57,7 @@ if command -v kubectl >/dev/null 2>&1
 end
 
 # Added by LM Studio CLI (lms)
-set -gx PATH $PATH /Users/csmith/.lmstudio/bin
+set -gx PATH $PATH $HOME/.lmstudio/bin
 # End of LM Studio CLI section
 
 # Anthropic API key for Avante/Claude (stored as universal variable, refresh with `refresh-anthropic-key`)
