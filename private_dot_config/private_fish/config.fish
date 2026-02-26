@@ -68,7 +68,7 @@ end
 # DockerHub Credentials - use get_registry_user and get_registry_password functions
 # These lazy-load from 1Password only when first called
 
-# Auto-attach to tmux in interactive terminal sessions
-if status is-interactive; and not set -q TMUX; and command -v tmux >/dev/null 2>&1
-    mux
-end
+# Auto-attach to tmux in interactive terminal sessions (disabled)
+# if status is-interactive; and not set -q TMUX; and command -v tmux >/dev/null 2>&1
+#     mux
+# end
