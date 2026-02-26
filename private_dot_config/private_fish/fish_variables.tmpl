@@ -5,9 +5,9 @@ SETUVAR --export ABBR_TIPS_REGEXES:\x28\x5e\x28\x5cw\x2b\x5cs\x2b\x29\x2b\x28\x2
 SETUVAR --export PRE_COMMIT_COLOR:never
 SETUVAR ZO_CMD:zo
 SETUVAR Z_CMD:z
-SETUVAR Z_DATA:/Users/csmith/\x2elocal/share/z/data
-SETUVAR Z_DATA_DIR:/Users/csmith/\x2elocal/share/z
-SETUVAR Z_EXCLUDE:\x5e/Users/csmith\x24
+SETUVAR Z_DATA:{{ .chezmoi.homeDir }}/\x2elocal/share/z/data
+SETUVAR Z_DATA_DIR:{{ .chezmoi.homeDir }}/\x2elocal/share/z
+SETUVAR Z_EXCLUDE:\x5e{{ .chezmoi.homeDir }}\x24
 SETUVAR --export __ABBR_TIPS_KEYS:a__\x1ea__\x1ea__
 SETUVAR --export __ABBR_TIPS_VALUES:\x1e\x1e
 SETUVAR --export __ANTHROPIC_API_KEY_CACHED:sk\x2dant\x2dapi03\x2dnAtZP\x2dgJHygl2GbWgfK3G4cr0VgJq9uw9Oy5NxYGIABRizhRTrOGdu19ZSuzSG2asLBd8z6IyehI9ThnLcK39A\x2dJ_3FwgAA
@@ -23,7 +23,7 @@ SETUVAR _fisher_oh_2D_my_2D_fish_2F_plugin_2D_bang_2D_bang_files:\x7e/\x2econfig
 SETUVAR _fisher_patrickf1_2F_fzf_2E_fish_files:\x7e/\x2econfig/fish/functions/_fzf_configure_bindings_help\x2efish\x1e\x7e/\x2econfig/fish/functions/_fzf_extract_var_info\x2efish\x1e\x7e/\x2econfig/fish/functions/_fzf_preview_changed_file\x2efish\x1e\x7e/\x2econfig/fish/functions/_fzf_preview_file\x2efish\x1e\x7e/\x2econfig/fish/functions/_fzf_report_diff_type\x2efish\x1e\x7e/\x2econfig/fish/functions/_fzf_report_file_type\x2efish\x1e\x7e/\x2econfig/fish/functions/_fzf_search_directory\x2efish\x1e\x7e/\x2econfig/fish/functions/_fzf_search_git_log\x2efish\x1e\x7e/\x2econfig/fish/functions/_fzf_search_git_status\x2efish\x1e\x7e/\x2econfig/fish/functions/_fzf_search_history\x2efish\x1e\x7e/\x2econfig/fish/functions/_fzf_search_processes\x2efish\x1e\x7e/\x2econfig/fish/functions/_fzf_search_variables\x2efish\x1e\x7e/\x2econfig/fish/functions/_fzf_wrapper\x2efish\x1e\x7e/\x2econfig/fish/functions/fzf_configure_bindings\x2efish\x1e\x7e/\x2econfig/fish/conf\x2ed/fzf\x2efish\x1e\x7e/\x2econfig/fish/completions/fzf_configure_bindings\x2efish
 SETUVAR _fisher_plugins:jorgebucaran/fisher\x1emeaningful\x2dooo/sponge\x1eoh\x2dmy\x2dfish/plugin\x2dbang\x2dbang\x1ejethrokuan/z\x1epatrickf1/fzf\x2efish\x1ejorgebucaran/autopair\x2efish\x1egazorby/fish\x2dabbreviation\x2dtips\x1edecors/fish\x2dcolored\x2dman\x1efranciscolourenco/done
 SETUVAR _fisher_upgraded_to_4_4:\x1d
-SETUVAR fish_user_paths:/opt/homebrew/opt/curl/bin\x1e/opt/homebrew/bin\x1e/Users/csmith/\x2ecodeium/windsurf/bin\x1e/Applications/Ghostty\x2eapp/Contents/MacOS
+SETUVAR fish_user_paths:/opt/homebrew/opt/curl/bin\x1e/opt/homebrew/bin\x1e{{ .chezmoi.homeDir }}/\x2ecodeium/windsurf/bin\x1e/Applications/Ghostty\x2eapp/Contents/MacOS
 SETUVAR sponge_allow_previously_successful:true
 SETUVAR sponge_delay:2
 SETUVAR sponge_filters:sponge_filter_failed\x1esponge_filter_matched
