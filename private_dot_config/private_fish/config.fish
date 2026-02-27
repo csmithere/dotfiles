@@ -1,4 +1,4 @@
-set PATH $HOME/bin $HOME/.local/bin $PATH
+set PATH $HOME/bin $HOME/.local/bin $HOME/.cargo/bin $PATH
 if status is-interactive
     # Commands to run in interactive sessions can go here
 

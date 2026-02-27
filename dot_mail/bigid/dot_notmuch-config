@@ -1,0 +1,16 @@
+[database]
+path=/Users/csmith/.mail/bigid
+
+[user]
+name=Chris Smith
+primary_email=csmith@bigid.com
+
+[new]
+tags=new
+ignore=.mbsyncstate;.strstrstrstr;.uidvalidity
+
+[search]
+exclude_tags=deleted;spam
+
+[maildir]
+synchronize_flags=true

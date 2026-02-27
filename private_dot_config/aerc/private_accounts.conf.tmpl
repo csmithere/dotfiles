@@ -1,0 +1,15 @@
+[BigID]
+source=notmuch://~/.mail/bigid
+query-map=~/.config/aerc/query-map
+{{ $refreshToken := onepasswordRead "op://BigID/Gmail OAuth/refresh_token" -}}
+{{ $clientId := onepasswordRead "op://BigID/Gmail OAuth/client_id" -}}
+{{ $clientSecret := onepasswordRead "op://BigID/Gmail OAuth/client_secret" -}}
+{{ $tokenEndpoint := onepasswordRead "op://BigID/Gmail OAuth/token_endpoint" -}}
+outgoing=smtps+oauthbearer://csmith%40bigid.com:{{ urlquery $refreshToken }}@smtp.gmail.com:465?token_endpoint={{ urlquery $tokenEndpoint }}&client_id={{ $clientId }}&client_secret={{ $clientSecret }}
+default=INBOX
+from=Chris Smith <csmith@bigid.com>
+copy-to=Sent
+archive=All Mail
+check-mail=5m
+check-mail-cmd=~/.config/aerc/sync-mail.sh
+multi-file-strategy=act-dir

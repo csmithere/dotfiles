@@ -1,0 +1,111 @@
+# vim: ft=dosini
+#
+# Gruvbox styleset for aerc - for gruvbox-dark-hard terminals
+# Uses bright ANSI colors (9-15) for visibility
+#
+
+*.default = true
+*.normal = true
+
+# Selected row - bright white on gruvbox bg2
+*.selected.bg = 8
+*.selected.fg = 15
+*.selected.bold = true
+
+# Borders and title
+border.fg = 8
+title.bg = 8
+title.fg = 15
+title.bold = true
+
+# Status line
+statusline_default.bg = 8
+statusline_default.fg = 15
+statusline_error.bg = 1
+statusline_error.fg = 15
+statusline_error.bold = true
+statusline_success.bg = 8
+statusline_success.fg = 10
+statusline_success.bold = true
+statusline_warning.bg = 8
+statusline_warning.fg = 11
+statusline_warning.bold = true
+
+*warning.fg = 11
+*warning.bold = true
+*success.fg = 10
+*success.bold = true
+*error.fg = 9
+*error.bold = true
+
+# Email headers
+header.fg = 12
+header.bold = true
+
+# Message list
+msglist_unread.fg = 15
+msglist_unread.bold = true
+msglist_read.fg = 7
+msglist_deleted.fg = 8
+msglist_deleted.dim = true
+msglist_marked.fg = 11
+msglist_marked.bold = true
+msglist_flagged.fg = 11
+msglist_flagged.bold = true
+msglist_pill.bg = 10
+msglist_pill.fg = 0
+
+# Folder list
+dirlist_default.fg = 7
+dirlist_unread.fg = 14
+dirlist_unread.bold = true
+dirlist_recent.fg = 10
+
+# MIME parts
+part_mimetype.fg = 8
+part_filename.fg = 13
+
+# Selector / completion
+selector_chooser.bold = true
+selector_focused.bg = 12
+selector_focused.fg = 0
+selector_focused.bold = true
+
+completion_default.bg = 8
+completion_default.fg = 15
+completion_pill.bg = 12
+completion_pill.fg = 0
+completion_description.fg = 7
+
+# Tab bar
+tab.fg = 7
+tab.selected.fg = 15
+tab.selected.bold = true
+
+[viewer]
+*.default = true
+*.normal = true
+url.underline = true
+url.fg = 12
+header.bold = true
+header.fg = 12
+signature.dim = true
+signature.fg = 8
+diff_meta.bold = true
+diff_meta.fg = 11
+diff_chunk.fg = 13
+diff_chunk_func.fg = 13
+diff_chunk_func.dim = true
+diff_add.fg = 10
+diff_del.fg = 9
+quote_1.fg = 14
+quote_2.fg = 12
+quote_3.fg = 14
+quote_3.dim = true
+quote_4.fg = 12
+quote_4.dim = true
+quote_x.fg = 13
+quote_x.dim = true
+
+[user]
+label.fg = 13

@@ -1,0 +1,19 @@
+#!/bin/bash
+# Auto-tag new messages based on their Maildir folder
+
+export NOTMUCH_CONFIG="${HOME}/.mail/bigid/.notmuch-config"
+
+# Tag by folder
+notmuch tag +inbox -new -- tag:new and folder:INBOX
+notmuch tag +sent -new -- tag:new and folder:Sent
+notmuch tag +draft -new -- tag:new and folder:Drafts
+notmuch tag +trash -new -- tag:new and folder:Trash
+notmuch tag +spam -new -- tag:new and folder:Spam
+notmuch tag +starred -new -- tag:new and folder:Starred
+notmuch tag +important -new -- tag:new and folder:Important
+
+# All Mail: just remove the new tag (messages already tagged by specific folder)
+notmuch tag -new -- tag:new and folder:All
+
+# Catch-all: remove new tag from anything remaining (custom labels, etc.)
+notmuch tag -new -- tag:new

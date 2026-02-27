@@ -1,0 +1,102 @@
+# Gmail account for csmith@bigid.com via XOAUTH2
+IMAPAccount bigid
+Host imap.gmail.com
+Port 993
+User csmith@bigid.com
+AuthMechs XOAUTH2
+PassCmd "~/.config/aerc/get-access-token.sh"
+TLSType IMAPS
+
+IMAPStore bigid-remote
+Account bigid
+
+MaildirStore bigid-local
+Subfolders Verbatim
+Path ~/.mail/bigid/
+Inbox ~/.mail/bigid/INBOX
+
+# INBOX
+Channel bigid-inbox
+Far :bigid-remote:
+Near :bigid-local:
+Patterns INBOX
+Create Near
+Expunge Both
+SyncState *
+
+# Sent Mail
+Channel bigid-sent
+Far :bigid-remote:"[Gmail]/Sent Mail"
+Near :bigid-local:Sent
+Create Near
+Expunge Both
+SyncState *
+
+# Drafts
+Channel bigid-drafts
+Far :bigid-remote:"[Gmail]/Drafts"
+Near :bigid-local:Drafts
+Create Near
+Expunge Both
+SyncState *
+
+# Trash
+Channel bigid-trash
+Far :bigid-remote:"[Gmail]/Trash"
+Near :bigid-local:Trash
+Create Near
+Expunge Both
+SyncState *
+
+# Spam
+Channel bigid-spam
+Far :bigid-remote:"[Gmail]/Spam"
+Near :bigid-local:Spam
+Create Near
+Expunge Both
+SyncState *
+
+# Starred
+Channel bigid-starred
+Far :bigid-remote:"[Gmail]/Starred"
+Near :bigid-local:Starred
+Create Near
+Expunge Both
+SyncState *
+
+# Important
+Channel bigid-important
+Far :bigid-remote:"[Gmail]/Important"
+Near :bigid-local:Important
+Create Near
+Expunge Both
+SyncState *
+
+# All Mail
+Channel bigid-all
+Far :bigid-remote:"[Gmail]/All Mail"
+Near :bigid-local:All
+Create Near
+Expunge Both
+SyncState *
+
+# Custom label folders
+Channel bigid-labels
+Far :bigid-remote:
+Near :bigid-local:
+Patterns * !INBOX ![Gmail]* !Sent !Drafts !Trash !Spam !Starred !Important !All
+Create Near
+Expunge Both
+SyncState *
+
+# Sync everything
+Group bigid
+Channel bigid-inbox
+Channel bigid-sent
+Channel bigid-drafts
+Channel bigid-trash
+Channel bigid-spam
+Channel bigid-starred
+Channel bigid-important
+Channel bigid-all
+Channel bigid-labels

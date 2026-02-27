@@ -1,0 +1,8 @@
+INBOX=tag:inbox and not tag:trash
+Sent=tag:sent
+Drafts=tag:draft
+Starred=tag:starred
+Important=tag:important
+Trash=tag:trash
+Spam=tag:spam
+All Mail=*
